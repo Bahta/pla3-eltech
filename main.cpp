@@ -79,7 +79,7 @@ enum code {encode, decode};
 		}	
 	}
 
-void read_parameters(const int &argc, char **argv, int &lastParameterPosition, code &mode, std::string &alphabet, int &readError) {
+void read_parameters(const int &argc, char **argv, int &lastParameterPosition, code &mode, std::string &alphabet, int &readError, bool &isHelp) {
 	bool isInputAlphabet = false;
 	bool isInputType = false;
 	int inputAlphabetAddr;
@@ -127,6 +127,7 @@ void read_parameters(const int &argc, char **argv, int &lastParameterPosition, c
 		//@needIdea strange thing - i can use it in middle of request
 		if (strncmp(argv[i], "-h", 2)==0) {
 			help();	
+			isHelp = true;
 			break;
 		}
 
@@ -154,6 +155,7 @@ void read_parameters(const int &argc, char **argv, int &lastParameterPosition, c
 		//long input help		
 		if (argv[i] == "--help") {
 			help();
+			isHelp = true;
 			break;
 		}
 
@@ -175,8 +177,10 @@ void read_parameters(const int &argc, char **argv, int &lastParameterPosition, c
 	void read_key_source_dest(const int &position, const int &argc, char **argv, int &key, int &source_addr, int &dest_addr, int &readError) {
 			//from last parameter location
 			for (int j=position; j<argc; ++j) {
+				if (j>=argc) {readError = 7; break;}
 				key = atoi(&argv[j][0]);
 				++j;
+				if (j>=argc) {readError = 8; break;}
 				//source name  +  dest name (if exists, else dest=source)
 				source_addr=j;
 				++j;
@@ -207,7 +211,9 @@ int main(int argc,char **argv) {
 	int dest_addr;
 	//errors collector
 	int readError=0;
-
+	//is help requested, to track it
+	bool isHelp = false;
+	
 	//text
 	std::string array;
 	//alphabet
@@ -215,7 +221,8 @@ int main(int argc,char **argv) {
 
 
 
-	read_parameters(argc, argv, lastParameterPosition, mode, alphabet, readError);
+	read_parameters(argc, argv, lastParameterPosition, mode, alphabet, readError, isHelp);
+	if (isHelp) {return 0;}
 	read_key_source_dest(lastParameterPosition,argc,argv,key,source_addr,dest_addr, readError);
 
 	//checking key for errors
@@ -230,6 +237,8 @@ int main(int argc,char **argv) {
 		//4 -k<0,
 		//5 - k=0 --> not digits,
 		//6 - parameters not found
+		//7 - no key
+		//8 - no source
 		return 1;
 	}
 
