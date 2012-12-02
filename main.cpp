@@ -159,8 +159,11 @@ void read_parameters(const int &argc, char **argv, int &lastParameterPosition, c
 
 		//if parameters not found
 		//@needIdea does it work? 
-//		readError = 6;
-//		break;
+		if (argv[i][0]=='-'){
+			readError = 6;
+			break;
+		}
+
 	}	
 	
 
