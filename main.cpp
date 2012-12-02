@@ -194,11 +194,6 @@ void read_parameters(const int &argc, char **argv, int &lastParameterPosition, c
 
 
 int main(int argc,char **argv) {
-	//too short input
-	if (argc<3) {
-		std::cout <<"incorrect input" <<'\n' <<"use help: -h / --help";
-		return 1;
-	}
 	//mode: encoding/decoding
 	code mode = encode;
 	//key for caesar cipher
