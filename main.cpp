@@ -153,7 +153,7 @@ void read_parameters(const int &argc, char **argv, int &lastParameterPosition, c
 		}
 		
 		//long input help		
-		if (argv[i] == "--help") {
+		if (strncmp(argv[i],"--help",6)==0) {
 			help();
 			isHelp = true;
 			break;
