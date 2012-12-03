@@ -237,11 +237,10 @@ int main(int argc,char **argv) {
 		return 1;
 	}
 
-	std::ifstream source(argv[source_addr]);
-	std::ofstream dest(argv[dest_addr]);	
+	std::ifstream source(argv[source_addr]);	
 	//up to the eof
 	getline(source, array, '\1');
-
+	
 	std::cout << array <<'\n';
 
 	if (mode == encode) {
@@ -252,6 +251,7 @@ int main(int argc,char **argv) {
 
 		std::cout << array <<'\n';
 
+	std::ofstream dest(argv[dest_addr]);
 	dest << array <<'\n';
 
 	return 0;
